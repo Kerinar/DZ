@@ -47,17 +47,16 @@ void main() throws FileNotFoundException {
     scanner.close();
 
     //Стрим
-    students.stream().forEach(n -> IO.println(n.toString()));
-    students.stream().forEach(n -> IO.println(n.getBooks()));
-
-    IO.println(Stream
-            .concat(students.get(0).getBooks().stream(), students.get(1).getBooks().stream())
-            .sorted((b1, b2) -> Integer.compare(b1.getPages(), b2.getPages()))
-            .distinct()
-            .filter(n -> n.getYear() > 2000)
-            .limit(3)
-            .map(n -> Integer.toString(n.getYear()))
-            .findFirst()
-            .orElse("No such book"));
+    IO.println(students.stream()
+                .peek(n -> IO.println(n.toString()))
+                .peek(n -> IO.println(n.getBooks()))
+                .flatMap(n -> n.getBooks().stream())
+                .sorted((b1, b2) -> Integer.compare(b1.getPages(), b2.getPages()))
+                .distinct()
+                .filter(n -> n.getYear() > 2000)
+                .limit(3)
+                .map(n -> Integer.toString(n.getYear()))
+                .findFirst()
+                .orElse("No such book"));
 
 }
